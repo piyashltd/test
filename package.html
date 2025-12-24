@@ -7,151 +7,224 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <style>
+        .period-active {
+            background-color: #4f46e5;
+            color: white;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        .period-inactive {
+            color: #6b7280;
+            background-color: transparent;
+        }
+        .period-inactive:hover {
+            color: #4f46e5;
+        }
+    </style>
 </head>
 <body>
 
-    <div class="animate-slide-up-lg py-10">
-        <div class="container mx-auto px-4 max-w-5xl">
+    <div class="animate-slide-up-lg py-10 w-full">
+        <div class="container mx-auto px-4 max-w-6xl">
             
             <!-- Header -->
-            <div class="text-center mb-10">
+            <div class="text-center mb-8">
                 <a href="login.html" class="inline-flex items-center text-indigo-600 bg-white px-4 py-2 rounded-full shadow-sm text-sm font-semibold mb-6 hover:bg-gray-50 transition">
                     <i class="fa-solid fa-arrow-left mr-2"></i> লগইন পেজে ফিরুন
                 </a>
-                <h1 class="text-4xl font-bold text-gray-800 mb-2">আমাদের প্যাকেজ সমূহ</h1>
-                <p class="text-gray-500">আপনার প্রয়োজন অনুযায়ী সেরা স্পিড বেছে নিন</p>
+                <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">ইন্টারনেট প্যাকেজ সমূহ</h1>
+                <p class="text-gray-500">স্বল্প মূল্যে সেরা গতির ইন্টারনেট উপভোগ করুন</p>
             </div>
 
-            <!-- Tab Switcher (Visual Logic Only for Demo) -->
-            <div class="flex justify-center mb-10" x-data="{ period: 'monthly' }">
-                <div class="bg-white p-1 rounded-xl shadow-sm border border-gray-200 inline-flex">
-                    <button class="px-6 py-2 rounded-lg text-sm font-semibold bg-indigo-600 text-white shadow-sm">
-                        মাসিক (৩০ দিন)
-                    </button>
-                    <button class="px-6 py-2 rounded-lg text-sm font-semibold text-gray-500 hover:text-indigo-600">
+            <!-- Toggle Buttons -->
+            <div class="flex justify-center mb-10">
+                <div class="bg-white p-1.5 rounded-xl shadow-sm border border-gray-200 inline-flex relative z-10">
+                    <button onclick="updatePrices('weekly')" id="btn-weekly" class="period-inactive px-6 py-2 rounded-lg text-sm font-semibold transition-all duration-200">
                         সাপ্তাহিক (৭ দিন)
+                    </button>
+                    <button onclick="updatePrices('monthly')" id="btn-monthly" class="period-active px-6 py-2 rounded-lg text-sm font-semibold transition-all duration-200">
+                        মাসিক (৩০ দিন)
                     </button>
                 </div>
             </div>
 
             <!-- Packages Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center">
 
-                <!-- Package 1: 2 Mbps -->
-                <div class="package-card group">
+                <!-- 3 Mbps -->
+                <div class="package-card group hover:border-blue-400">
                     <div class="text-center">
-                        <div class="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-500 group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-paper-plane text-2xl"></i>
+                        <div class="w-14 h-14 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-500 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-paper-plane text-xl"></i>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-800">বেসিক প্যাক</h3>
-                        <div class="text-4xl font-bold text-indigo-600 my-4">
-                            2 <span class="text-lg text-gray-400 font-normal">Mbps</span>
+                        <h3 class="text-lg font-bold text-gray-800">ছাত্র/ছাত্রী প্যাক</h3>
+                        <div class="text-4xl font-bold text-indigo-600 my-3">
+                            3 <span class="text-lg text-gray-400 font-normal">Mbps</span>
                         </div>
-                        <p class="text-gray-500 text-sm mb-6">সাধারণ ব্রাউজিং ও সোশ্যাল মিডিয়ার জন্য</p>
+                        <p class="text-gray-500 text-xs mb-4">সোশ্যাল মিডিয়া ও ব্রাউজিং</p>
                     </div>
-                    <ul class="space-y-3 mb-8 text-sm text-gray-600">
-                        <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-2"></i> আনলিমিটেড ডাটা</li>
-                        <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-2"></i> ৩০ দিন মেয়াদ</li>
-                        <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-2"></i> বাফারলেস ইউটিউব (SD)</li>
-                    </ul>
-                    <button class="w-full py-3 rounded-xl border-2 border-indigo-600 text-indigo-600 font-bold hover:bg-indigo-600 hover:text-white transition-colors">
-                        ৳ ৩০০ / মাস
+                    <div class="border-t border-gray-100 my-4"></div>
+                    <div class="text-center">
+                        <span class="text-2xl font-bold text-gray-800" id="price-3">৳ ১০০</span>
+                        <span class="text-gray-400 text-sm" id="duration-3">/ ৩০ দিন</span>
+                    </div>
+                    <button class="w-full mt-4 py-2.5 rounded-lg border border-indigo-600 text-indigo-600 font-bold text-sm hover:bg-indigo-600 hover:text-white transition-colors">
+                        প্যাকেজটি নিন
                     </button>
                 </div>
 
-                <!-- Package 2: 5 Mbps (Featured) -->
-                <div class="package-card ring-2 ring-indigo-500 transform md:-translate-y-4">
-                    <div class="best-value-badge">জনপ্রিয়</div>
+                <!-- 4 Mbps -->
+                <div class="package-card group hover:border-cyan-400">
+                    <div class="text-center">
+                        <div class="w-14 h-14 bg-cyan-50 rounded-full flex items-center justify-center mx-auto mb-4 text-cyan-600 group-hover:scale-110 transition-transform">
+                            <i class="fa-brands fa-youtube text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-800">ইকোনমি প্যাক</h3>
+                        <div class="text-4xl font-bold text-indigo-600 my-3">
+                            4 <span class="text-lg text-gray-400 font-normal">Mbps</span>
+                        </div>
+                        <p class="text-gray-500 text-xs mb-4">ইউটিউব ও হালকা কাজ</p>
+                    </div>
+                    <div class="border-t border-gray-100 my-4"></div>
+                    <div class="text-center">
+                        <span class="text-2xl font-bold text-gray-800" id="price-4">৳ ১৫০</span>
+                        <span class="text-gray-400 text-sm" id="duration-4">/ ৩০ দিন</span>
+                    </div>
+                    <button class="w-full mt-4 py-2.5 rounded-lg border border-indigo-600 text-indigo-600 font-bold text-sm hover:bg-indigo-600 hover:text-white transition-colors">
+                        প্যাকেজটি নিন
+                    </button>
+                </div>
+
+                <!-- 6 Mbps (Recommended) -->
+                <div class="package-card ring-2 ring-indigo-500 transform md:-translate-y-2 relative">
+                    <div class="best-value-badge bg-indigo-500">সেরা অফার</div>
                     <div class="text-center">
                         <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4 text-indigo-600">
                             <i class="fa-solid fa-rocket text-2xl"></i>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-800">স্ট্যান্ডার্ড প্যাক</h3>
-                        <div class="text-4xl font-bold text-indigo-600 my-4">
-                            5 <span class="text-lg text-gray-400 font-normal">Mbps</span>
+                        <h3 class="text-xl font-bold text-gray-800">ফ্যামিলি প্যাক</h3>
+                        <div class="text-5xl font-bold text-indigo-600 my-3">
+                            6 <span class="text-xl text-gray-400 font-normal">Mbps</span>
                         </div>
-                        <p class="text-gray-500 text-sm mb-6">ফ্যামিলি ব্যবহার ও ভিডিও কলের জন্য</p>
+                        <p class="text-gray-500 text-sm mb-4">ভিডিও কল ও সব কাজ</p>
                     </div>
-                    <ul class="space-y-3 mb-8 text-sm text-gray-600">
-                        <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-2"></i> আনলিমিটেড ডাটা</li>
-                        <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-2"></i> ৩০ দিন মেয়াদ</li>
-                        <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-2"></i> HD স্ট্রিমিং</li>
-                    </ul>
-                    <button class="w-full py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold shadow-lg hover:shadow-indigo-500/40 transition-shadow">
-                        ৳ ৫০০ / মাস
+                    <div class="border-t border-gray-100 my-4"></div>
+                    <div class="text-center">
+                        <span class="text-3xl font-bold text-gray-800" id="price-6">৳ ২০০</span>
+                        <span class="text-gray-400 text-sm" id="duration-6">/ ৩০ দিন</span>
+                    </div>
+                    <button class="w-full mt-4 py-3 rounded-lg bg-indigo-600 text-white font-bold text-sm shadow-lg hover:bg-indigo-700 transition-colors">
+                        প্যাকেজটি নিন
                     </button>
                 </div>
 
-                <!-- Package 3: 7 Mbps -->
-                <div class="package-card group">
+                <!-- 8 Mbps -->
+                <div class="package-card group hover:border-purple-400 lg:col-start-1 lg:col-end-2 xl:col-auto">
                     <div class="text-center">
-                        <div class="w-16 h-16 bg-purple-50 rounded-full flex items-center justify-center mx-auto mb-4 text-purple-500 group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-bolt text-2xl"></i>
+                        <div class="w-14 h-14 bg-purple-50 rounded-full flex items-center justify-center mx-auto mb-4 text-purple-500 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-bolt text-xl"></i>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-800">সুপার প্যাক</h3>
-                        <div class="text-4xl font-bold text-indigo-600 my-4">
-                            7 <span class="text-lg text-gray-400 font-normal">Mbps</span>
+                        <h3 class="text-lg font-bold text-gray-800">গেমিং প্যাক</h3>
+                        <div class="text-4xl font-bold text-indigo-600 my-3">
+                            8 <span class="text-lg text-gray-400 font-normal">Mbps</span>
                         </div>
-                        <p class="text-gray-500 text-sm mb-6">গেমিং ও লাইভ স্ট্রিমের জন্য</p>
+                        <p class="text-gray-500 text-xs mb-4">ল্যাগ ফ্রি গেমিং</p>
                     </div>
-                    <ul class="space-y-3 mb-8 text-sm text-gray-600">
-                        <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-2"></i> আনলিমিটেড ডাটা</li>
-                        <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-2"></i> ৩০ দিন মেয়াদ</li>
-                        <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-2"></i> Full HD স্ট্রিমিং</li>
-                    </ul>
-                    <button class="w-full py-3 rounded-xl border-2 border-indigo-600 text-indigo-600 font-bold hover:bg-indigo-600 hover:text-white transition-colors">
-                        ৳ ৭০০ / মাস
+                    <div class="border-t border-gray-100 my-4"></div>
+                    <div class="text-center">
+                        <span class="text-2xl font-bold text-gray-800" id="price-8">৳ ২৫০</span>
+                        <span class="text-gray-400 text-sm" id="duration-8">/ ৩০ দিন</span>
+                    </div>
+                    <button class="w-full mt-4 py-2.5 rounded-lg border border-indigo-600 text-indigo-600 font-bold text-sm hover:bg-indigo-600 hover:text-white transition-colors">
+                        প্যাকেজটি নিন
                     </button>
                 </div>
 
-                <!-- Package 4: 10 Mbps -->
-                <div class="package-card group">
+                <!-- 10 Mbps -->
+                <div class="package-card group hover:border-pink-400 lg:col-start-2 lg:col-end-3 xl:col-auto">
                     <div class="text-center">
-                        <div class="w-16 h-16 bg-pink-50 rounded-full flex items-center justify-center mx-auto mb-4 text-pink-500 group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-gamepad text-2xl"></i>
+                        <div class="w-14 h-14 bg-pink-50 rounded-full flex items-center justify-center mx-auto mb-4 text-pink-500 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-crown text-xl"></i>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-800">গেমার চয়েস</h3>
-                        <div class="text-4xl font-bold text-indigo-600 my-4">
+                        <h3 class="text-lg font-bold text-gray-800">আল্ট্রা প্যাক</h3>
+                        <div class="text-4xl font-bold text-indigo-600 my-3">
                             10 <span class="text-lg text-gray-400 font-normal">Mbps</span>
                         </div>
+                        <p class="text-gray-500 text-xs mb-4">4K ভিডিও ও হেভি ডাউনলোড</p>
                     </div>
-                    <button class="w-full py-3 rounded-xl border-2 border-gray-200 text-gray-600 font-bold hover:border-pink-500 hover:text-pink-500 transition-colors mt-auto">
-                        ৳ ১০০০ / মাস
-                    </button>
-                </div>
-
-                <!-- Package 5: 12 Mbps -->
-                <div class="package-card group">
+                    <div class="border-t border-gray-100 my-4"></div>
                     <div class="text-center">
-                        <div class="w-16 h-16 bg-orange-50 rounded-full flex items-center justify-center mx-auto mb-4 text-orange-500 group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-crown text-2xl"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-gray-800">আল্ট্রা স্পিড</h3>
-                        <div class="text-4xl font-bold text-indigo-600 my-4">
-                            12 <span class="text-lg text-gray-400 font-normal">Mbps</span>
-                        </div>
+                        <span class="text-2xl font-bold text-gray-800" id="price-10">৳ ৩০০</span>
+                        <span class="text-gray-400 text-sm" id="duration-10">/ ৩০ দিন</span>
                     </div>
-                    <button class="w-full py-3 rounded-xl border-2 border-gray-200 text-gray-600 font-bold hover:border-orange-500 hover:text-orange-500 transition-colors mt-auto">
-                        ৳ ১২০০ / মাস
+                    <button class="w-full mt-4 py-2.5 rounded-lg border border-indigo-600 text-indigo-600 font-bold text-sm hover:bg-indigo-600 hover:text-white transition-colors">
+                        প্যাকেজটি নিন
                     </button>
-                </div>
-
-                <!-- Contact Support -->
-                <div class="package-card flex flex-col justify-center items-center bg-gray-50 border-dashed border-2 border-gray-300">
-                    <div class="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mb-4 text-gray-500">
-                        <i class="fa-solid fa-headset text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800">কাস্টম প্ল্যান?</h3>
-                    <p class="text-gray-500 text-center text-sm my-4">আপনার অফিসের জন্য ডেডিকেটেড ব্যান্ডউইথ প্রয়োজন?</p>
-                    <a href="tel:01700000000" class="text-indigo-600 font-bold hover:underline">কল করুন: 01700-000000</a>
                 </div>
 
             </div>
             
-            <p class="text-center text-gray-400 text-xs mt-12">* সকল প্যাকেজের মূল্য ভ্যাট প্রযোজ্য হতে পারে।</p>
+            <p class="text-center text-gray-400 text-xs mt-12">* শর্তাবলী প্রযোজ্য। সংযোগ নিতে অফিসে যোগাযোগ করুন।</p>
         </div>
     </div>
 
+    <!-- JavaScript for Price Toggling -->
+    <script>
+        const data = {
+            monthly: {
+                label: '/ ৩০ দিন',
+                prices: {
+                    '3': '৳ ১০০',
+                    '4': '৳ ১৫০',
+                    '6': '৳ ২০০',
+                    '8': '৳ ২৫০',
+                    '10': '৳ ৩০০'
+                }
+            },
+            weekly: {
+                label: '/ ৭ দিন',
+                prices: {
+                    '3': '৳ ৩৫',
+                    '4': '৳ ৫০',
+                    '6': '৳ ৭০',
+                    '8': '৳ ৯০',
+                    '10': '৳ ১১০'
+                }
+            }
+        };
+
+        function updatePrices(type) {
+            // Update Buttons Style
+            const btnWeekly = document.getElementById('btn-weekly');
+            const btnMonthly = document.getElementById('btn-monthly');
+
+            if (type === 'weekly') {
+                btnWeekly.className = 'period-active px-6 py-2 rounded-lg text-sm font-semibold transition-all duration-200';
+                btnMonthly.className = 'period-inactive px-6 py-2 rounded-lg text-sm font-semibold transition-all duration-200';
+            } else {
+                btnWeekly.className = 'period-inactive px-6 py-2 rounded-lg text-sm font-semibold transition-all duration-200';
+                btnMonthly.className = 'period-active px-6 py-2 rounded-lg text-sm font-semibold transition-all duration-200';
+            }
+
+            // Update Prices and Labels
+            const speeds = ['3', '4', '6', '8', '10'];
+            
+            speeds.forEach(speed => {
+                const priceElement = document.getElementById(`price-${speed}`);
+                const durationElement = document.getElementById(`duration-${speed}`);
+                
+                // Add fade effect
+                priceElement.style.opacity = '0';
+                
+                setTimeout(() => {
+                    priceElement.textContent = data[type].prices[speed];
+                    durationElement.textContent = data[type].label;
+                    priceElement.style.opacity = '1';
+                }, 200);
+            });
+        }
+    </script>
 </body>
 </html>
+
 
