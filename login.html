@@ -21,83 +21,42 @@
     <script type="text/javascript" src="/md5.js"></script>
     <!-- $(endif) -->
 
-    <script type="text/javascript">
-        window.onload = function() {
-            // ১. GitHub এর জন্য Error Box লুকানো
-            var errorText = document.getElementById('mikrotik-error');
-            var errorBox = document.getElementById('error-container');
-            if (errorText && errorText.innerText.trim() === "$(error)") {
-                errorBox.style.display = 'none';
-            }
-
-            // ২. GitHub এর জন্য Username বক্স থেকে $(username) লেখা সরিয়ে ফেলা
-            var usernameInput = document.querySelector('input[name="username"]');
-            if (usernameInput && usernameInput.value === '$(username)') {
-                usernameInput.value = ""; // বক্স ফাঁকা করে দেবে
-            }
-        };
-
-        function doLogin(e) {
-            if(e) e.preventDefault();
-            
-            var user = document.login.username.value;
-            var pass = document.login.password.value;
-
-            // GitHub Demo Logic
-            if (user === "Admin" && pass === "admin") {
-                // ডেমোর জন্য লোকাল স্টোরেজে নাম সেভ রাখা হচ্ছে যাতে স্ট্যাটাস পেজে দেখানো যায়
-                localStorage.setItem("demo_user", user);
-                window.location.href = "status.html";
-                return false;
-            }
-
-            // MikroTik Logic (রাউটারে কাজ করবে)
-            /*
-            if (typeof document.sendin !== 'undefined') {
-               document.sendin.username.value = user;
-               document.sendin.password.value = hexMD5('$(chap-id)' + pass + '$(chap-challenge)');
-               document.sendin.submit();
-               return false;
-            }
-            */
-
-            alert("ডেমো মোড: ভুল পাসওয়ার্ড! \nDemo User: Admin \nDemo Pass: admin");
-            return false;
-        }
-    </script>
-
     <div class="animate-slide-up">
         <div class="glass-panel p-8">
             
+            <!-- Logo & Title -->
             <div class="text-center mb-8">
                 <div class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 text-white shadow-lg shadow-indigo-500/30">
                     <i class="fa-solid fa-wifi text-2xl"></i>
                 </div>
                 <h1 class="text-2xl font-bold text-gray-800">ওয়াইফাই জোন</h1>
                 <p class="text-gray-500 text-sm mt-1">ইন্টারনেট ব্যবহার করতে লগ ইন করুন</p>
-                <div class="mt-2 inline-block px-3 py-1 bg-indigo-50 text-indigo-600 rounded-full text-xs font-semibold border border-indigo-100">
-                    User: Admin | Pass: admin
+                
+                <!-- Demo Credential Badge -->
+                <div class="mt-3 inline-flex items-center gap-2 px-3 py-1.5 bg-indigo-50 text-indigo-700 rounded-lg text-xs font-semibold border border-indigo-100 shadow-sm">
+                    <i class="fa-solid fa-key text-indigo-400"></i>
+                    <span>User: Admin | Pass: admin</span>
                 </div>
             </div>
 
             <!-- Error Message Box -->
-            <!-- $(if error) -->
-            <div id="error-container" class="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-r-lg">
+            <div id="error-container" class="hidden bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-r-lg transition-all duration-300">
                 <div class="flex items-center">
                     <i class="fa-solid fa-circle-exclamation text-red-500 mr-2"></i>
-                    <p id="mikrotik-error" class="text-sm text-red-700">$(error)</p>
+                    <!-- এখানে $(error) সরাসরি না লিখে JS দিয়ে বসানো হবে -->
+                    <p id="mikrotik-error" class="text-sm text-red-700"></p> 
                 </div>
             </div>
-            <!-- $(endif) -->
 
+            <!-- Login Form -->
             <form name="login" action="$(link-login-only)" method="post" onSubmit="return doLogin(event)">
                 <input type="hidden" name="dst" value="$(link-orig)" />
                 <input type="hidden" name="popup" value="true" />
 
                 <div class="input-group">
                     <i class="fa-regular fa-user input-icon"></i>
-                    <!-- value="$(username)" রাখা হয়েছে মিক্রোটিকের জন্য, কিন্তু JS দিয়ে গিটহাবে ক্লিয়ার করা হবে -->
-                    <input type="text" name="username" value="$(username)" class="form-input" placeholder="ইউজারনেম দিন" required>
+                    <!-- value এর ভেতর থেকে $(username) সরিয়ে দিয়েছি এবং নিচে স্ক্রিপ্ট দিয়ে হ্যান্ডেল করা হয়েছে -->
+                    <input type="text" id="user-input" name="username" class="form-input" placeholder="ইউজারনেম দিন" required>
                 </div>
 
                 <div class="input-group">
@@ -110,6 +69,7 @@
                 </button>
             </form>
 
+            <!-- Packages Link Button -->
             <div class="text-center border-t border-gray-200 pt-6">
                 <p class="text-gray-600 mb-3 text-sm">কোনো একাউন্ট নেই?</p>
                 <a href="package.html" class="btn-secondary w-full flex items-center justify-center gap-2">
@@ -118,12 +78,74 @@
                 </a>
             </div>
 
+            <!-- Footer -->
             <div class="mt-6 flex justify-between items-center text-xs text-gray-400">
                 <span><i class="fa-solid fa-phone mr-1"></i> 01700-000000</span>
-                <span>v 2.3</span>
+                <span>v 2.4</span>
             </div>
         </div>
     </div>
+
+    <!-- Main Logic Script -->
+    <script type="text/javascript">
+        // 1. MIKROTIK VARIABLE HANDLING
+        // এই ভেরিয়েবলগুলো মিক্রোটিক সার্ভারে রিপ্লেস হবে, কিন্তু গিটহাবে স্ট্রিং হিসেবে থাকবে
+        var mtUsername = "$(username)";
+        var mtError = "$(error)";
+        
+        // 2. PAGE LOAD LOGIC
+        document.addEventListener("DOMContentLoaded", function() {
+            var userInput = document.getElementById('user-input');
+            var errorBox = document.getElementById('error-container');
+            var errorText = document.getElementById('mikrotik-error');
+
+            // --- USERNAME LOGIC ---
+            // যদি mtUsername এর মান "$(username)" টেক্সট-ই থাকে (মানে গিটহাবে আছে)
+            if (mtUsername === "$(username)") {
+                userInput.value = ""; // বক্স ফাঁকা রাখো
+            } else {
+                userInput.value = mtUsername; // মিক্রোটিক থেকে নাম আসলে সেটা বসাও
+            }
+
+            // --- ERROR LOGIC ---
+            // যদি mtError এর মান "$(error)" না হয় এবং খালি না থাকে (মানে সত্যি এরর আছে)
+            if (mtError !== "$(error)" && mtError !== "") {
+                errorText.innerText = mtError;
+                errorBox.classList.remove('hidden'); // এরর বক্স দেখাও
+            } else {
+                errorBox.classList.add('hidden'); // এরর বক্স লুকাও
+            }
+        });
+
+        // 3. LOGIN FUNCTION
+        function doLogin(e) {
+            if(e) e.preventDefault();
+            
+            var user = document.login.username.value;
+            var pass = document.login.password.value;
+
+            // GitHub Demo Login Logic
+            if (user === "Admin" && pass === "admin") {
+                localStorage.setItem("demo_user", user);
+                window.location.href = "status.html";
+                return false;
+            }
+
+            // MikroTik Submit Logic (শুধুমাত্র রিয়েল রাউটারে কাজ করবে)
+            /*
+            if (typeof document.sendin !== 'undefined') {
+               document.sendin.username.value = user;
+               document.sendin.password.value = hexMD5('$(chap-id)' + pass + '$(chap-challenge)');
+               document.sendin.submit();
+               return false;
+            }
+            */
+
+            // Demo Error Alert
+            alert("ডেমো মোড: ভুল পাসওয়ার্ড! \nDemo User: Admin \nDemo Pass: admin");
+            return false;
+        }
+    </script>
 
 </body>
 </html>
