@@ -6,7 +6,6 @@
     <title>Internet Packages</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
     <style>
         .period-active {
             background-color: #4f46e5;
@@ -20,9 +19,38 @@
         .period-inactive:hover {
             color: #4f46e5;
         }
+        /* Custom animation for card appearance */
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .animate-slide-up-lg {
+            animation: slideUp 0.6s ease-out forwards;
+        }
+        .package-card {
+            background-color: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .best-value-badge {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            padding: 0.25rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
     </style>
 </head>
-<body>
+<body class="bg-gray-50 font-sans antialiased">
 
     <div class="animate-slide-up-lg py-10 w-full">
         <div class="container mx-auto px-4 max-w-6xl">
@@ -164,7 +192,29 @@
 
             </div>
             
-            <p class="text-center text-gray-400 text-xs mt-12">* শর্তাবলী প্রযোজ্য। সংযোগ নিতে অফিসে যোগাযোগ করুন।</p>
+            <!-- Contact Icons Section -->
+            <div class="mt-16 text-center">
+                <p class="text-gray-500 font-medium mb-4">প্যাকেজ নিতে যোগাযোগ করুন</p>
+                <div class="inline-flex items-center gap-8 bg-white px-8 py-4 rounded-full shadow-sm border border-gray-100">
+                    
+                    <!-- Telegram Icon -->
+                    <a href="https://t.me/your_username" target="_blank" class="transform transition hover:scale-110 text-blue-500 hover:text-blue-600">
+                        <i class="fa-brands fa-telegram text-4xl"></i>
+                    </a>
+
+                    <!-- Messenger Icon -->
+                    <a href="https://m.me/your_username" target="_blank" class="transform transition hover:scale-110 text-blue-600 hover:text-blue-700">
+                        <i class="fa-brands fa-facebook-messenger text-4xl"></i>
+                    </a>
+
+                    <!-- Facebook Icon -->
+                    <a href="https://facebook.com/your_page" target="_blank" class="transform transition hover:scale-110 text-blue-700 hover:text-blue-800">
+                        <i class="fa-brands fa-facebook text-4xl"></i>
+                    </a>
+
+                </div>
+            </div>
+
         </div>
     </div>
 
