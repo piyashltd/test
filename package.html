@@ -322,39 +322,6 @@
         });
     }
 </script>
-
-
-        function updatePrices(type) {
-            // Update Buttons Style
-            const btnWeekly = document.getElementById('btn-weekly');
-            const btnMonthly = document.getElementById('btn-monthly');
-
-            if (type === 'weekly') {
-                btnWeekly.className = 'period-active px-6 py-2 rounded-lg text-sm font-semibold transition-all duration-200';
-                btnMonthly.className = 'period-inactive px-6 py-2 rounded-lg text-sm font-semibold transition-all duration-200';
-            } else {
-                btnWeekly.className = 'period-inactive px-6 py-2 rounded-lg text-sm font-semibold transition-all duration-200';
-                btnMonthly.className = 'period-active px-6 py-2 rounded-lg text-sm font-semibold transition-all duration-200';
-            }
-
-            // Update Prices and Labels
-            const speeds = ['3', '4', '6', '8', '10'];
-            
-            speeds.forEach(speed => {
-                const priceElement = document.getElementById(`price-${speed}`);
-                const durationElement = document.getElementById(`duration-${speed}`);
-                
-                // Add fade effect
-                priceElement.style.opacity = '0';
-                
-                setTimeout(() => {
-                    priceElement.textContent = data[type].prices[speed];
-                    durationElement.textContent = data[type].label;
-                    priceElement.style.opacity = '1';
-                }, 200);
-            });
-        }
-    </script>
 </body>
 </html>
 
