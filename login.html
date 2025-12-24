@@ -10,7 +10,7 @@
 </head>
 <body>
 
-    <!-- MikroTik Logic (Hidden) - রাউটারের জন্য -->
+    <!-- MikroTik Logic (Hidden) -->
     <!-- $(if chap-id) -->
     <form name="sendin" action="$(link-login-only)" method="post" style="display:none">
         <input type="hidden" name="username" />
@@ -22,37 +22,39 @@
     <!-- $(endif) -->
 
     <script type="text/javascript">
-        // এই ফাংশনটি মিক্রোটিক এবং গিটহাব ডেমো দুই জায়গাতেই কাজ করবে
+        // Page Load হওয়ার পর GitHub এর জন্য Error Box লুকানোর স্ক্রিপ্ট
+        window.onload = function() {
+            var errorText = document.getElementById('mikrotik-error');
+            var errorBox = document.getElementById('error-container');
+            
+            // যদি টেক্সট হুবহু "$(error)" হয়, তার মানে এটি গিটহাবে আছে, তাই লুকিয়ে ফেলবে
+            if (errorText && errorText.innerText.trim() === "$(error)") {
+                errorBox.style.display = 'none';
+            }
+        };
+
         function doLogin(e) {
-            // ফর্ম সাবমিট আটকানো
             if(e) e.preventDefault();
             
             var user = document.login.username.value;
             var pass = document.login.password.value;
 
-            // ১. GitHub Pages Demo Logic (User: Admin, Pass: admin)
+            // ১. GitHub Demo Logic (User: Admin, Pass: admin)
             if (user === "Admin" && pass === "admin") {
                 window.location.href = "status.html";
                 return false;
             }
 
-            // ২. MikroTik Logic (যদি মিক্রোটিক সার্ভারে থাকে)
-            // এখানে চেক করা হচ্ছে chap-id ভেরিয়েবল আছে কিনা (MikroTik এ থাকবে)
-            // যেহেতু এটা HTML ফাইল, তাই সরাসরি মিক্রোটিক সিনট্যাক্স এখানে কাজ করবে না GitHub এ
-            // তাই আমরা শুধু ডেমো অ্যালার্ট দিচ্ছি যদি ভুল পাসওয়ার্ড দেয়
-            
-            if (user !== "Admin" || pass !== "admin") {
-                 // মিক্রোটিক এনভায়রনমেন্টে এই নিচের অংশ কাজ করবে
-                /* document.sendin.username.value = user;
-                document.sendin.password.value = hexMD5('$(chap-id)' + pass + '$(chap-challenge)');
-                document.sendin.submit();
-                */
-               
-               // ডেমো এর জন্য এরর মেসেজ
-               alert("ভুল ইউজারনেম বা পাসওয়ার্ড! \nDemo User: Admin \nDemo Pass: admin");
-               return false;
-            }
+            // ২. MikroTik Logic (রাউটারে কাজ করবে)
+            // if (typeof document.sendin !== 'undefined') {
+            //    document.sendin.username.value = user;
+            //    document.sendin.password.value = hexMD5('$(chap-id)' + pass + '$(chap-challenge)');
+            //    document.sendin.submit();
+            //    return false;
+            // }
 
+            // Demo Error
+            alert("ডেমো মোড: ভুল পাসওয়ার্ড! \nDemo User: Admin \nDemo Pass: admin");
             return false;
         }
     </script>
@@ -67,23 +69,22 @@
                 </div>
                 <h1 class="text-2xl font-bold text-gray-800">ওয়াইফাই জোন</h1>
                 <p class="text-gray-500 text-sm mt-1">ইন্টারনেট ব্যবহার করতে লগ ইন করুন</p>
-                <p class="text-xs text-indigo-500 mt-2 bg-indigo-50 inline-block px-2 py-1 rounded border border-indigo-100">
-                    Demo: Admin / admin
-                </p>
+                <div class="mt-2 inline-block px-3 py-1 bg-indigo-50 text-indigo-600 rounded-full text-xs font-semibold border border-indigo-100">
+                    User: Admin | Pass: admin
+                </div>
             </div>
 
-            <!-- Error Message Box -->
+            <!-- Error Message Box (ID যুক্ত করা হয়েছে) -->
             <!-- $(if error) -->
-            <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-r-lg">
+            <div id="error-container" class="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-r-lg transition-all">
                 <div class="flex items-center">
                     <i class="fa-solid fa-circle-exclamation text-red-500 mr-2"></i>
-                    <p class="text-sm text-red-700">$(error)</p>
+                    <p id="mikrotik-error" class="text-sm text-red-700">$(error)</p>
                 </div>
             </div>
             <!-- $(endif) -->
 
             <!-- Login Form -->
-            <!-- onSubmit ইভেন্ট যোগ করা হয়েছে -->
             <form name="login" action="$(link-login-only)" method="post" onSubmit="return doLogin(event)">
                 <input type="hidden" name="dst" value="$(link-orig)" />
                 <input type="hidden" name="popup" value="true" />
@@ -115,7 +116,7 @@
             <!-- Footer -->
             <div class="mt-6 flex justify-between items-center text-xs text-gray-400">
                 <span><i class="fa-solid fa-phone mr-1"></i> 01700-000000</span>
-                <span>v 2.1</span>
+                <span>v 2.2</span>
             </div>
         </div>
     </div>
