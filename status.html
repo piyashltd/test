@@ -4,14 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Status</title>
-    <!-- Auto Refresh Logic -->
     <!-- $(if refresh-timeout) -->
     <meta http-equiv="refresh" content="$(refresh-timeout-secs)">
     <!-- $(endif) -->
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -20,15 +18,15 @@
     <div class="animate-slide-up-lg">
         <div class="glass-panel p-4 md:p-8">
             
-            <!-- Header Section -->
+            <!-- Header -->
             <div class="flex flex-col md:flex-row justify-between items-center mb-8 border-b border-gray-200 pb-6">
                 <div class="flex items-center gap-4 mb-4 md:mb-0">
                     <div class="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center text-green-600 shadow-sm">
                         <i class="fa-solid fa-user-check text-2xl"></i>
                     </div>
                     <div>
-                        <!-- ডেমোর জন্য $(username) এর বদলে DemoUser ব্যবহার করছি, রাউটারে $(username) কাজ করবে -->
-                        <h2 class="text-xl font-bold text-gray-800">স্বাগতম, <span class="text-indigo-600">$(username)</span></h2>
+                        <!-- id="user-display" যোগ করা হয়েছে JS দিয়ে কন্ট্রোল করার জন্য -->
+                        <h2 class="text-xl font-bold text-gray-800">স্বাগতম, <span id="user-display" class="text-indigo-600">$(username)</span></h2>
                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                             <span class="w-2 h-2 bg-green-500 rounded-full mr-1.5 animate-pulse"></span>
                             এক্টিভ
@@ -45,39 +43,37 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 
-                <!-- Left Column: Stats & Info -->
+                <!-- Left Column -->
                 <div class="space-y-6 lg:col-span-1">
-                    <!-- Current Session Stats -->
                     <div class="stats-card">
                         <h3 class="text-sm font-semibold text-gray-500 uppercase mb-4 tracking-wider">বর্তমান সেশন</h3>
                         <div class="grid grid-cols-2 gap-4">
                             <div class="bg-white p-3 rounded-lg border border-gray-100">
                                 <p class="text-xs text-gray-500 mb-1"><i class="fa-solid fa-download text-green-500 mr-1"></i> ডাউনলোড</p>
-                                <p class="font-bold text-lg">$(bytes-out-nice)</p>
+                                <p class="font-bold text-lg" id="bytes-out">$(bytes-out-nice)</p>
                             </div>
                             <div class="bg-white p-3 rounded-lg border border-gray-100">
                                 <p class="text-xs text-gray-500 mb-1"><i class="fa-solid fa-upload text-blue-500 mr-1"></i> আপলোড</p>
-                                <p class="font-bold text-lg">$(bytes-in-nice)</p>
+                                <p class="font-bold text-lg" id="bytes-in">$(bytes-in-nice)</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Connection Details Table -->
                     <div class="stats-card">
                         <h3 class="text-sm font-semibold text-gray-500 uppercase mb-3 tracking-wider">সংযোগ তথ্য</h3>
                         <table class="w-full text-sm">
                             <tbody class="divide-y divide-gray-100">
                                 <tr>
                                     <td class="py-2 text-gray-500">IP Address</td>
-                                    <td class="py-2 text-right font-mono font-medium">$(ip)</td>
+                                    <td class="py-2 text-right font-mono font-medium" id="ip-addr">$(ip)</td>
                                 </tr>
                                 <tr>
                                     <td class="py-2 text-gray-500">MAC Address</td>
-                                    <td class="py-2 text-right font-mono font-medium">$(mac)</td>
+                                    <td class="py-2 text-right font-mono font-medium" id="mac-addr">$(mac)</td>
                                 </tr>
                                 <tr>
                                     <td class="py-2 text-gray-500">Uptime</td>
-                                    <td class="py-2 text-right font-medium text-indigo-600">$(uptime)</td>
+                                    <td class="py-2 text-right font-medium text-indigo-600" id="uptime">$(uptime)</td>
                                 </tr>
                                 <!-- $(if session-time-left) -->
                                 <tr>
@@ -90,7 +86,7 @@
                     </div>
                 </div>
 
-                <!-- Right Column: 30 Days Graph -->
+                <!-- Right Column: Graph -->
                 <div class="lg:col-span-2">
                     <div class="stats-card h-full flex flex-col">
                         <div class="flex justify-between items-center mb-6">
@@ -99,18 +95,13 @@
                                 <option>এই মাস</option>
                             </select>
                         </div>
-                        
-                        <!-- Chart Container -->
                         <div class="flex-grow relative w-full h-64 md:h-auto">
                             <canvas id="usageChart"></canvas>
                         </div>
-                        <p class="text-xs text-center text-gray-400 mt-4">* এই গ্রাফটি ডেমো ডাটা দেখাচ্ছে। প্রকৃত ডাটার জন্য লগ সার্ভার প্রয়োজন।</p>
                     </div>
                 </div>
-
             </div>
 
-            <!-- Banner/Promo -->
             <div class="mt-6 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl p-4 text-white flex justify-between items-center shadow-lg">
                 <div>
                     <p class="font-bold">প্যাকেজ শেষ হয়ে যাচ্ছে?</p>
@@ -120,23 +111,35 @@
                     অফার দেখুন
                 </a>
             </div>
-
         </div>
     </div>
 
-    <!-- Chart Script -->
     <script>
-        // ডেমো ডাটা জেনারেশন (Static UI এর জন্য)
-        const ctx = document.getElementById('usageChart').getContext('2d');
-        
-        // ৩০ দিনের ডামি লেবেল
-        const labels = Array.from({length: 30}, (_, i) => i + 1);
-        
-        // র‍্যান্ডম ডাটা
-        const downloadData = Array.from({length: 30}, () => Math.floor(Math.random() * 50) + 10); // 10-60 GB demo
-        const uploadData = Array.from({length: 30}, () => Math.floor(Math.random() * 20) + 5);  // 5-25 GB demo
+        // Demo Data Replacement Logic
+        window.onload = function() {
+            // Check if running on GitHub/Local (checking if variable is raw text)
+            var userDisplay = document.getElementById('user-display');
+            
+            if (userDisplay && userDisplay.innerText.includes('$(username)')) {
+                // Replace with Demo Data
+                var demoUser = localStorage.getItem("demo_user") || "Admin";
+                userDisplay.innerText = demoUser;
+                
+                document.getElementById('bytes-out').innerText = "1.2 GB";
+                document.getElementById('bytes-in').innerText = "350 MB";
+                document.getElementById('ip-addr').innerText = "192.168.88.254";
+                document.getElementById('mac-addr').innerText = "XX:XX:XX:XX:XX:XX";
+                document.getElementById('uptime').innerText = "2h 45m";
+            }
+        };
 
-        const usageChart = new Chart(ctx, {
+        // Graph Logic
+        const ctx = document.getElementById('usageChart').getContext('2d');
+        const labels = Array.from({length: 30}, (_, i) => i + 1);
+        const downloadData = Array.from({length: 30}, () => Math.floor(Math.random() * 50) + 10);
+        const uploadData = Array.from({length: 30}, () => Math.floor(Math.random() * 20) + 5);
+
+        new Chart(ctx, {
             type: 'line',
             data: {
                 labels: labels,
@@ -144,7 +147,7 @@
                     {
                         label: 'ডাউনলোড (GB)',
                         data: downloadData,
-                        borderColor: '#8b5cf6', // Purple
+                        borderColor: '#8b5cf6',
                         backgroundColor: 'rgba(139, 92, 246, 0.1)',
                         tension: 0.4,
                         fill: true,
@@ -153,7 +156,7 @@
                     {
                         label: 'আপলোড (GB)',
                         data: uploadData,
-                        borderColor: '#3b82f6', // Blue
+                        borderColor: '#3b82f6',
                         backgroundColor: 'rgba(59, 130, 246, 0.05)',
                         tension: 0.4,
                         fill: true,
@@ -181,13 +184,20 @@
                         ticks: { font: { size: 10 } }
                     }
                 },
-                interaction: {
-                    intersect: false,
-                    mode: 'index',
-                },
+                interaction: { intersect: false, mode: 'index' },
             }
         });
+        
+        function openLogout() {
+            // For Demo only
+            if (window.location.protocol !== 'file:' && !window.location.host.includes('mikrotik')) {
+                window.location.href = 'logout.html';
+                return false;
+            }
+            return true;
+        }
     </script>
 </body>
 </html>
+
 
